@@ -1,0 +1,1 @@
+# azure-step-azureresourcemanager-template-deploy
