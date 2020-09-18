@@ -39,7 +39,7 @@ if [ -n "${CERT}" ] ; then
   chmod 0600 "${PASSWORD_OR_CERT}"
   echo "${CERT}" > "${PASSWORD_OR_CERT}"
 fi
-[ -z "${PASSWORD_OR_CERT}" ] && usage 'spec: your `azure` hash must specify either a `secret` or a `cert` key'
+[ -z "${PASSWORD_OR_CERT}" ] && usage 'spec: your `azure` hash must specify either a `password` or a `cert` key'
 
 $AZ login --service-principal --tenant "${TENANT_ID}" --username "${USERNAME}" --password "${PASSWORD_OR_CERT}"
 
