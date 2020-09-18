@@ -1,0 +1,100 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "properties": {
+      "azure": {
+        "type": "object",
+        "description": "A mapping of Azure account configuration.",
+        "properties": {
+          "connection": {
+            "type": "object",
+            "x-relay-connectionType": "azure",
+            "description": "A Relay Azure connection to use",
+            "properties": {
+              "subscriptionID": {
+                "type": "string",
+                "description": "Azure Subscription ID"
+              },
+              "clientID": {
+                "type": "string",
+                "description": "Azure Service Principal client ID"
+              },
+              "tenantID": {
+                "type": "string",
+                "description": "Azure Service Principal tenant ID"
+              },
+              "secret": {
+                "type": "string",
+                "description": "Azure Service Principal secret"
+              }
+            },
+            "required": [
+              "subscriptionID", 
+              "clientID",
+              "tenantID",
+              "secret"
+            ]
+          }
+        },
+        "required": [
+          "connection"
+        ]
+      },
+      "deploymentName": {
+          "type": "string", 
+          "description":"Name of the Azure Deployment"
+      },
+      "resourceGroup": {
+          "type": "string",
+          "description": "Name of the Resource Group to deploy into"
+      },
+      "location": {
+          "type":"string",
+          "description": "Location to deploy into"
+      },
+      "templateFile": {
+        "type": "string",
+        "description": "Path to template file"
+      },
+      "template": {
+        "type": "string",
+        "description": "Inline Azure Resource Manager template"  
+      },
+      "git": {
+        "type": "object",
+        "description": "A map of git configuration. If you're using HTTPS, only name and repository are required.",
+        "properties": {
+          "ssh_key": {
+            "type": "string",
+            "description": "The SSH key to use when cloning the git repository. You can pass the key to Relay as a secret. See the example below."
+          },
+          "known_hosts": {
+            "type": "string",
+            "description": "SSH known hosts file. Use a Relay secret to pass the contents of the file into the workflow as a base64-encoded string. See the example below."
+          },
+          "name": {
+            "type": "string",
+            "description": "A directory name for the git clone."
+          },
+          "branch": {
+            "type": "string",
+            "description": "The Git branch to clone.",
+            "default": "master"
+          },
+          "repository": {
+            "type": "string",
+            "description": "The git repository URL."
+          }
+        },
+        "required": [
+          "ssh_key",
+          "name",
+          "repository"
+        ]
+      }
+    },
+    "required": [
+      "azure"
+    ],
+    "additionalProperties": false
+} 
