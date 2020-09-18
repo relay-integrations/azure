@@ -23,13 +23,13 @@ usage() {
   exit 1
 }
 
-TENANT_ID="$( $NI get -p '{ .azure.tenantID }' )"
+TENANT_ID="$( $NI get -p '{ .azure.connection.tenantID }' )"
 [ -z "${TENANT_ID}" ] && usage 'spec: your `azure` hash is missing the `tenantID` key'
 
-USERNAME="$( $NI get -p '{ .azure.username }' )"
+USERNAME="$( $NI get -p '{ .azure.connection.clientID }' )"
 [ -z "${USERNAME}" ] && usage 'spec: your `azure` hash is missing the `username` key'
 
-PASSWORD="$( $NI get -p '{ .azure.password }' )"
+PASSWORD="$( $NI get -p '{ .azure.connection.secret }' )"
 PASSWORD_OR_CERT="${PASSWORD}"
 CERT="$( $NI get -p '{ .azure.cert }' )"
 [ -n "${PASSWORD}" ] && [ -n "${CERT}" ] && usage 'spec: you must specify only one of `password` or `cert` keys'
