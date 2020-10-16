@@ -43,3 +43,25 @@ schemas:
   spec: 
     source: file
     file: spec.schema.json
+
+examples:
+- summary: Deploy an Azure Resource Manager template
+  content:
+    apiVersion: 1
+    kind: Step
+    name: deploy-template
+    image: relaysh/azure-step-azureresourcemanager-template-deploy
+    spec: 
+      azure: !Connection { type: azure, name: my-azure-account }
+      deploymentName: !Parameter deploymentName
+      location: !Parameter location 
+      templateFile: !Parameter pathToTemplateJson
+      git: 
+        ssh_key: !Secret ssh_key
+        known_hosts: !Secret known_hosts
+        name: !Parameter repoName 
+        branch: !Parameter branch
+        repository: !Parameter pathToRepo
+      parameters:
+        first: example-1
+        second: example-2   
