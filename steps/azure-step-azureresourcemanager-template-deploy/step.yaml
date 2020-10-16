@@ -47,7 +47,7 @@ schemas:
 examples:
 - summary: Deploy an Azure Resource Manager template
   content:
-    apiVersion: 1
+    apiVersion: v1
     kind: Step
     name: deploy-template
     image: relaysh/azure-step-azureresourcemanager-template-deploy
