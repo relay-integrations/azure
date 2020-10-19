@@ -14,7 +14,7 @@ name: azure-step-azureresourcemanager-template-deploy
 version: 3
 
 # High-level phrase describing what this action does. Required.
-summary: Deploy
+summary: Deploy ARM template
 
 # Single-paragraph explanation of what this action does in more detail.
 # Optional. Markdown.
