@@ -8,7 +8,8 @@ The following are supported actions:
 
 |   Type    |  Name              |
 |-----------|--------------------|
-| Step      | [azure-step-azureresourcemanager-template-deploy](/steps/azure-step-azureresourcemanager-template-deploy)  | 
+| Step      | [azure-step-azureresourcemanager-template-deploy](/steps/azure-step-azureresourcemanager-template-deploy)  |
+| Trigger   | [azure-eventgrid-trigger-event-fired](/triggers/eventgrid-trigger-event-fired) 
 
 ## Contributing
 
