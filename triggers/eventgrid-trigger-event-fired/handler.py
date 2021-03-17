@@ -17,7 +17,7 @@ async def handler():
     # Perform the subscription validation of the webhook - Details here: https://docs.microsoft.com/en-us/azure/event-grid/webhook-event-delivery
     if subscription_validation is None:
         continue
-    else if subscription_validation == 'SubscriptionValidation'
+    elif subscription_validation == 'SubscriptionValidation'
         payload = await request.get_json()
         logging.info("Validating webhook subscription with Azure: {}".format(subscription_validation))
         return {'validationResponse': payload['data']['validationCode']}, 200, {}
