@@ -15,12 +15,11 @@ async def handler():
     subscription_validation = request.headers.get('aeg-event-type')
 
     # Perform the subscription validation of the webhook - Details here: https://docs.microsoft.com/en-us/azure/event-grid/webhook-event-delivery
-    if subscription_validation is None:
-        continue
-    elif subscription_validation == 'SubscriptionValidation':
+    if subscription_validation == 'SubscriptionValidation':
         payload = await request.get_json()
-        logging.info("Validating webhook subscription with Azure: {}".format(subscription_validation))
-        return {'validationResponse': payload['data']['validationCode']}, 200, {}
+        logging.info("Received the following webhook payload: \n%s", json.dumps(payload, indent=4))
+        logging.info("Validating webhook subscription with Azure")
+        return {'validationResponse': payload[0]['data']['validationCode']}, 200, {}
 
     event_payload = await request.get_json()
     logging.info("Received the following webhook payload: \n%s", json.dumps(event_payload, indent=4))
