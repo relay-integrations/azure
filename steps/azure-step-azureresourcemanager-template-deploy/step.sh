@@ -43,6 +43,11 @@ fi
 
 $AZ login --service-principal --tenant "${TENANT_ID}" --username "${USERNAME}" --password "${PASSWORD_OR_CERT}"
 
+# set subscription id
+
+SUBSCRIPTION_ID="$( $NI get -p '{ .azure.connection.subscriptionID }' )"
+$AZ account set --subscription "${SUBSCRIPTION_ID}"
+
 DEPLOYMENT_NAME="$( $NI get -p '{ .deploymentName }' )"
 [ -z "${DEPLOYMENT_NAME}" ] && usage 'spec: please specify a value for `deploymentName`'
 
@@ -74,7 +79,7 @@ mapfile -t PARAMETERS < <( $NI get | $JQ -r 'try .parameters | to_entries[] | "\
 
 if [ -n "${RESOURCE_GROUP}" ] ; then
   ## Deploy to resource group
-  $AZ group deployment create \
+  $AZ deployment group create \
     --resource-group "${RESOURCE_GROUP}" \
     --name "${DEPLOYMENT_NAME}" \
     --template-file "${TEMPLATE_FILE}" \
