@@ -10,7 +10,7 @@ ENV PATH="/root/.local/bin:${PATH}"
 RUN apk add --no-cache gcc musl-dev python3-dev libffi-dev openssl-dev cargo make icu
 
 # Install Azure CLI and libs
-RUN pip --no-cache-dir install --user \
+RUN pip --no-cache-dir install \
   azure-cli \
   azure-common \
   azure-mgmt-compute \

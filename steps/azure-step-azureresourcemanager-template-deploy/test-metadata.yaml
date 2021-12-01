@@ -1,0 +1,57 @@
+connections:
+  azure/internal:
+    subscriptionID: "myID"
+    tenantID: "myTenantID"
+    clientID: "myClientID"
+    secret: "mySecret"
+    # secret_id: "70c187fd-1287-42bb-97d9-ea052457f3f2"
+  azure/pub:
+    subscriptionID: "aaa"
+    tenantID: "aaa"
+    clientID: "aaa"
+    secret: "aaa"
+
+
+runs:
+  '1':
+    steps:
+      fromgit:
+        name: bicep-fromgit
+        image: relaysh/azure-step-azureresourcemanager-template-deploy 
+        spec:
+          azure:
+            connection: !Connection [azure, internal]
+          deploymentName: dbt-bicep-storage
+          resourceGroup: dbt-bicep
+          # templateFile: azure/storage_acct.bicep
+          templateFile: azure/storage_acct.json
+          # parameters:
+          #   resourceGroup: dbt-bicep
+          git:
+            name: git
+            branch: main
+            repository: https://github.com/timidri/relay-examples
+      inline:
+        name: bicep-inline
+        image: relaysh/azure-step-azureresourcemanager-template-deploy 
+        spec:
+          azure:
+            connection: !Connection [azure, internal]
+          deploymentName: dbt-arm-storage
+          resourceGroup: dbt-bicep
+          # templateFile: azure/storage_acct.bicep
+          template: |
+            param name string = 'dbtteststorageaccount'
+            param location string = 'eastus'
+
+            resource myStorage 'Microsoft.Storage/storageAccounts@2021-06-01' = {
+              name: name
+              kind: 'BlobStorage'
+              location: location
+              sku: {
+                name: 'Standard_LRS'
+              }
+              properties: {
+                accessTier: 'Hot'
+              }
+            }

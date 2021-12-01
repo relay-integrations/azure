@@ -1,6 +1,7 @@
-#!/bin/bash
+#!/bin/bash -x
 set -euo pipefail
 
+env
 #
 # Commands
 #
@@ -14,7 +15,7 @@ NI="${NI:-ni}"
 #
 
 WORKDIR="${WORKDIR:-/workspace}"
-
+mkdir -p "${WORKDIR}"
 #
 #
 #
