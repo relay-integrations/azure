@@ -62,7 +62,7 @@
       },
       "template": {
         "type": "string",
-        "description": "Inline Azure Resource Manager template"  
+        "description": "Inline Azure Resource Manager / Bicep template"  
       },
       "git": {
         "type": "object",

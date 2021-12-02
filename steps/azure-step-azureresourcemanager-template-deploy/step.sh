@@ -1,6 +1,5 @@
-#!/bin/bash
+#!/bin/bash 
 set -euo pipefail
-
 #
 # Commands
 #
@@ -14,7 +13,7 @@ NI="${NI:-ni}"
 #
 
 WORKDIR="${WORKDIR:-/workspace}"
-
+mkdir -p "${WORKDIR}"
 #
 #
 #
@@ -43,6 +42,11 @@ fi
 
 $AZ login --service-principal --tenant "${TENANT_ID}" --username "${USERNAME}" --password "${PASSWORD_OR_CERT}"
 
+# set subscription id
+
+SUBSCRIPTION_ID="$( $NI get -p '{ .azure.connection.subscriptionID }' )"
+$AZ account set --subscription "${SUBSCRIPTION_ID}"
+
 DEPLOYMENT_NAME="$( $NI get -p '{ .deploymentName }' )"
 [ -z "${DEPLOYMENT_NAME}" ] && usage 'spec: please specify a value for `deploymentName`'
 
@@ -61,10 +65,13 @@ if [ -n "${TEMPLATE_FILE}" ]; then
     ni log fatal 'spec: `templateFile` does not contain a valid reference to a file in the specified repository'
   fi
 else
-  TEMPLATE_FILE="${WORKDIR}/inline.template"
-
-  TEMPLATE="$( $NI get -p '{ .template }' | tee "${TEMPLATE_FILE}" )"
+  TEMPLATE="$( $NI get -p '{ .template }')"
   [ -z "${TEMPLATE}" ] && usage 'spec: please specify one of `template`, an inline template, or `templateFile`, the template file to deploy'
+  TEMPLATE_TYPE="json"
+  echo "${TEMPLATE}" | jq > /dev/null 2>&1 || TEMPLATE_TYPE="bicep"
+  echo "Detected template type: ${TEMPLATE_TYPE}"
+  TEMPLATE_FILE="${WORKDIR}/inline.${TEMPLATE_TYPE}"
+  echo "${TEMPLATE}" > "${TEMPLATE_FILE}"
 fi
 
 declare -a DEPLOY_ARGS
@@ -74,7 +81,7 @@ mapfile -t PARAMETERS < <( $NI get | $JQ -r 'try .parameters | to_entries[] | "\
 
 if [ -n "${RESOURCE_GROUP}" ] ; then
   ## Deploy to resource group
-  $AZ group deployment create \
+  $AZ deployment group create \
     --resource-group "${RESOURCE_GROUP}" \
     --name "${DEPLOYMENT_NAME}" \
     --template-file "${TEMPLATE_FILE}" \

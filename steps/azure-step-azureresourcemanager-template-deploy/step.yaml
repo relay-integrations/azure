@@ -14,12 +14,12 @@ name: azure-step-azureresourcemanager-template-deploy
 version: 3
 
 # High-level phrase describing what this action does. Required.
-summary: Deploy ARM template
+summary: Deploy ARM / Bicep template
 
 # Single-paragraph explanation of what this action does in more detail.
 # Optional. Markdown.
 description: |
-    This step deploys an Azure Resource Manager template.
+    This step deploys an Azure Resource Manager or Bicep template.
 
 # URL or path relative to this file to an icon or icons representing this
 # action. Optional. Defaults to the integration icon.
@@ -45,23 +45,25 @@ schemas:
     file: spec.schema.json
 
 examples:
-- summary: Deploy an Azure Resource Manager template
+- summary: Deploy an Azure Resource Manager / Bicep template
   content:
     apiVersion: v1
     kind: Step
     name: deploy-template
     image: relaysh/azure-step-azureresourcemanager-template-deploy
     spec: 
-      azure: !Connection { type: azure, name: my-azure-account }
-      deploymentName: !Parameter deploymentName
-      location: !Parameter location 
-      templateFile: !Parameter pathToTemplateJson
+      azure: ${connections['azure']['my-azure-account']}
+      deploymentName: ${parameters.deploymentName}
+      location: ${parameters.location}
+      templateFile: ${parameters.pathToTemplateJson}
+      # the template can also be a Bicep file
+      # templateFile: !Parameter pathToTemplateBicep
       git: 
-        ssh_key: !Secret ssh_key
-        known_hosts: !Secret known_hosts
-        name: !Parameter repoName 
-        branch: !Parameter branch
-        repository: !Parameter pathToRepo
+        ssh_key: ${secrets.ssh_key}
+        known_hosts: ${secrets.known_hosts}
+        name: ${parameters.repoName}
+        branch: ${parameters.branch}
+        repository: ${parameters.pathToRepo}
       parameters:
         first: example-1
         second: example-2   
