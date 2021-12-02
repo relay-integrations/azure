@@ -1,7 +1,5 @@
-#!/bin/bash -x
+#!/bin/bash 
 set -euo pipefail
-
-env
 #
 # Commands
 #
@@ -67,10 +65,13 @@ if [ -n "${TEMPLATE_FILE}" ]; then
     ni log fatal 'spec: `templateFile` does not contain a valid reference to a file in the specified repository'
   fi
 else
-  TEMPLATE_FILE="${WORKDIR}/inline.template"
-
-  TEMPLATE="$( $NI get -p '{ .template }' | tee "${TEMPLATE_FILE}" )"
+  TEMPLATE="$( $NI get -p '{ .template }')"
   [ -z "${TEMPLATE}" ] && usage 'spec: please specify one of `template`, an inline template, or `templateFile`, the template file to deploy'
+  TEMPLATE_TYPE="json"
+  echo "${TEMPLATE}" | jq > /dev/null 2>&1 || TEMPLATE_TYPE="bicep"
+  echo "Detected template type: ${TEMPLATE_TYPE}"
+  TEMPLATE_FILE="${WORKDIR}/inline.${TEMPLATE_TYPE}"
+  echo "${TEMPLATE}" > "${TEMPLATE_FILE}"
 fi
 
 declare -a DEPLOY_ARGS
