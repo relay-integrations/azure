@@ -4,11 +4,11 @@ Integration with Microsoft Azure for Puppet Relay.
 
 ## Actions
 
-The following are supported actions: 
+The following are supported actions:
 
 |   Type    |  Name              |
 |-----------|--------------------|
-| Step      | [azure-step-azureresourcemanager-template-deploy](/steps/azure-step-azureresourcemanager-template-deploy)  | 
+| Step      | [azureresourcemanager-template-deploy](/steps/azureresourcemanager-template-deploy)  |
 
 ## Contributing
 
